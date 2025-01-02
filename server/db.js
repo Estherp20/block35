@@ -28,4 +28,69 @@ const createTables = async() => {
       );
     `;
     await client.query(SQL);
+};
+
+const createUser = async({ username, password }) => {
+    const SQL = `
+        INSERT INTO users(id, username, password) VALUES($1, $2, $3) RETURNING *
+    `;
+    const response = await client.query(SQL, [uuid.v4(), username,  await bcrypt.hash(password, 5)]);
+    return response.rows[0];
+};
+
+const createProduct = async({ name }) => {
+    const SQL = `
+        INSERT INTO products(id, name) VALUES($1, $2) RETURNING *
+    `;
+    const response = await client.query(SQL, [uuid.v4(), name]);
+    return response.rows[0];
 }
+
+const fetchUsers = async() => {
+    const SQL = `
+    SELECT * from users`;
+    const response = await client.query(SQL);
+    return response.rows;
+  };
+
+  const fetchProducts = async() => {
+    const SQL = `
+      SELECT * from products
+    `;
+    const response = await client.query(SQL);
+    return response.rows;
+};
+
+const createFavorite = async ({user_id, product_id})=> {
+    const response = await client.query(
+      `
+      insert into favorites(id, user_id, product_id)
+      values($1, $2, $3) returning id, user_id, product_id
+      `,
+      [uuid.v4(), user_id, product_id]
+    );
+    return response.rows[0];
+  };
+
+  const fetchFavorites = async({ user_id }) =>{
+    const response = await client.query(`select id, user_id, product_id from favorites where user_id=$1`, [ user_id ]);
+    return response.rows;
+};
+
+const destroyFavorite = async ({ id, user_id }) => {
+    const response = await client.query(`delete from favorites where id=$1 and user_id=$2`, [id, user_id]);
+    return response; 
+  };
+
+
+module.exports = {
+    client,
+    createTables,
+    createUser,
+    createProduct,
+    fetchUsers,
+    fetchProducts,
+    createFavorite,
+    fetchFavorites,
+    destroyFavorite,
+  };       

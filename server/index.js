@@ -1,3 +1,5 @@
+const { client } = require('./db');
+
 const init = async () => {
     await client.connect();
     console.log('connected to db');
@@ -29,5 +31,5 @@ const init = async () => {
     app.listen(port, () => console.log(`listening on port ${port}`));
 
  };
- 
+
 init();
