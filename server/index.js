@@ -85,12 +85,12 @@ const init = async () => {
     const products = await fetchProducts();
     console.log(products);
     const [ estiFav, rachelFav, haroldFav, lisaFav ] = await Promise.all([
-      await createFavorite({ user_id: estiFav.id, product_id: dogFood.id}),
-      await createFavorite({ user_id: rachelFav.id, product_id: cot.id}),
-      await createFavorite({ user_id: haroldFav.id, product_id: leash.id}),
-      await createFavorite({ user_id: lisaFav.id, product_id: crate.id})
+      await createFavorite({ user_id: estiFav.id, product_id: Chocolate.id}),
+      await createFavorite({ user_id: rachelFav.id, product_id: Eggs.id}),
+      await createFavorite({ user_id: haroldFav.id, product_id: Sugar.id}),
+      await createFavorite({ user_id: lisaFav.id, product_id: Sprinkels.id})
     ]);
-    console.log('fetchFavorites: ', await fetchFavorites({ user_id: bernie.id}));
+    console.log('fetchFavorites: ', await fetchFavorites({ user_id: Esti.id}));
     const port = process.env.PORT || 3000;
     app.listen(port, () => console.log(`listening on port ${port}`));
 
